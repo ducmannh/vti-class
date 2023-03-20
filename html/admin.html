@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin</title>
+    <link rel="stylesheet" href="../css/stylesAdmin.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <button onclick="checkLogin()" class="button2"
+            style="cursor: pointer; background-color: rgb(31, 31, 240);">Login</button>
+        <button onclick="checkLogout()" class="button2"
+            style="cursor: pointer; background-color: rgb(31, 31, 240);">Logout</button>
+        <div id="avatar"></div>
+    </div>
+
+    <div class="container3">
+        <div class="left">
+            <div class="divDa">Danh Mục</div>
+            <div class="divMa">Manufacturer</div>
+            <div class="divCate">Category</div>
+            <div class="div4">Product</div>
+            <div class="div5">Account</div>
+            <div class="div6">Manufacturers</div>
+            <div class="div7">SAMSUNG</div>
+            <div class="div8">APPLE</div>
+            <div class="div9">XIAOMI</div>
+            <div class="div10">OPPO</div>
+            <div class="divCa">Categorys</div>
+            <div class="divCategorys">
+                <select class="select">
+                    <option value="Select Cate">Select Cate</option>
+                </select>
+                <div class="div11">Filter</div>
+            </div>
+        </div>
+
+        <div class="right">
+            <div class="div17">
+                <input type="text" id="input">
+                <button class="button2" id="search" onclick="searchProduct(event)">Search</button>
+            </div>
+            <div class="div18">
+                <button class="button3" id="addNew" onclick="addNew()">Add New</button>
+                <table id="table"></table>
+                <div class="div19">
+                    <div class="div12">1</div>
+                    <div class="div13">2</div>
+                    <div class="div14">3</div>
+                    <div class="div15">4</div>
+                    <div class="div16">5</div>
+                </div>
+            </div>
+            <div id="inputText"></div>
+        </div>
+    </div>
+    <script src="../js/admin.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,23 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+label{
+    font-size: 25px;
+}
+input{
+    margin-left: 20px;
+    margin-bottom: 20px;
+    font-size: 25px;
+}
+button{
+    font-size: 25px;
+    border: none;
+    background-color: rgb(31, 31, 240);
+    color: white;
+    padding: 7px;
+    border-radius: 5px;
+    cursor: pointer;
+}

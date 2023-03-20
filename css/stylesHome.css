@@ -1,0 +1,75 @@
+.container {
+    height: 50px;
+    width: 100vw;
+    background-color: rgb(237, 174, 57);
+}
+
+.div1 {
+    float: left;
+    display: flex;
+    /* margin-left: 20px; */
+}
+
+.div1>div {
+    margin-left: 20px;
+    font-size: 20px;
+    margin-top: 13px;
+}
+
+.div2 {
+    float: right;
+    display: flex;
+}
+
+.div2>div {
+    font-size: 20px;
+    margin-top: 13px;
+    margin-right: 40px;
+}
+
+.img1,
+.img2 {
+    width: 100vw;
+}
+
+.div3 {
+    position: relative;
+}
+
+.button1 {
+    position: absolute;
+    top: 40px;
+    right: 0px;
+    font-size: 30px;
+    border-radius: 5px;
+    background-color: rgb(247, 76, 105);
+    cursor: pointer;
+    border: none;
+}
+
+#textContainer {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    margin-left: 200px;
+    margin-right: 200px;
+}
+.img4 {
+    width: 200px;
+}
+
+.img5 {
+    width: 80px;
+}
+
+.textName {
+    font-weight: bold;
+    margin-left: 20px;
+}
+
+.manufacture,
+.img5,
+.price {
+    margin-left: 20px;
+}
