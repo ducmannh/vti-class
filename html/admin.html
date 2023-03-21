@@ -10,7 +10,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 </head>
 
-<body>
+<body onload="renderTable()">
     <div class="container">
         <button onclick="checkLogin()" class="button2"
             style="cursor: pointer; background-color: rgb(31, 31, 240);">Login</button>
@@ -59,7 +59,11 @@
             <div id="inputText"></div>
         </div>
     </div>
-    <script src="../js/admin.js"></script>
+    <script src="../js/admin.js">
+        window.onload = function() {
+            renderTable()
+        }
+    </script>
 </body>
 
 </html>
