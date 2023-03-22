@@ -13,39 +13,51 @@ function checkLogout() {
   window.location.href = "http://127.0.0.1:5500/html/login.html";
 }
 
-var table = (localStorage.getItem("table")) ? JSON.parse(localStorage.getItem("table")) : [];
+var table = localStorage.getItem("table")
+  ? JSON.parse(localStorage.getItem("table"))
+  : [];
 function addNew() {
-  document.getElementById("inputText").innerHTML =
-    "<input id='inputID' type='number' placeholder = 'Nhap ID'/> <input id='inputName' type='text' placeholder = 'Nhap ten san pham'/> <input id='inputPrice' type='number' placeholder = 'Nhap gia san pham'/> <input id='inputInfo' type='text' placeholder = 'Nhap thong tin san pham'/> <input id='inputCategory' type='text' placeholder = 'Nhap loai san pham'/> <input id='inputImage' type='file' /> <button id='addProduct'>Add new</button>";
+  let inputText = document.getElementById("inputText");
+  inputText.style.visibility = "visible";
+  inputText.innerHTML =
+    "<input id='inputID' type='number' placeholder = 'Nhap ID'/> <input id='inputName' type='text' placeholder = 'Nhap ten san pham'/> <input id='inputPrice' type='number' placeholder = 'Nhap gia san pham'/> <input id='inputInfo' type='text' placeholder = 'Nhap thong tin san pham'/> <input id='inputCategory' type='text' placeholder = 'Nhap loai san pham'/> <button id='addProduct'>Add new</button>";
 
   document.getElementById("addProduct").addEventListener("click", function () {
     let inputID = $("#inputID").val();
     let inputName = $("#inputName").val();
     let inputInfo = $("#inputInfo").val();
     let inputPrice = $("#inputPrice").val();
-    let inputImage = $("#inputImage").val();
     let inputCategory = $("#inputCategory").val();
-    let newData = {
-      id: inputID,
-      name: inputName,
-      price: inputPrice,
-      info: inputInfo,
-      image: inputImage,
-      category: inputCategory,
-    };
-    table.push(newData);
-    localStorage.setItem("table", JSON.stringify(table));
-    renderTable();
-    clearInput();
+    if (inputID && inputName && inputInfo && inputPrice && inputCategory) {
+      let existedID = table.find((product) => product.id === inputID);
+      if (existedID) {
+        alert("Mã sản phẩm đã tồn tại");
+      } else {
+        let newData = {
+          id: inputID,
+          name: inputName,
+          price: inputPrice,
+          info: inputInfo,
+          category: inputCategory,
+        };
+        table.push(newData);
+        localStorage.setItem("table", JSON.stringify(table));
+        renderTable();
+        clearInput();
+        inputText.style.visibility = "hidden";
+      }
+    } else {
+      alert("Vui lòng nhập đủ thông tin");
+    }
   });
 }
 
 function renderTable() {
-  if(table.length === 0) {
-    document.getElementById("table").style.visibility = "hidden"
-    return false
-  }else{
-    document.getElementById("table").style.visibility = "visible"
+  if (table.length === 0) {
+    document.getElementById("table").style.visibility = "hidden";
+    return false;
+  } else {
+    document.getElementById("table").style.visibility = "visible";
   }
   let tableData = `<table id="table">
   <tr>
@@ -53,7 +65,6 @@ function renderTable() {
       <th>Name</th>
       <th>Price</th>
       <th>Info</th>
-      <th>Image</th>
       <th>Category</th>
       <th>Edit</th>
       <th>Delete</th>
@@ -65,7 +76,6 @@ function renderTable() {
       <td>${data.name}</td>
       <td>${data.price}</td>
       <td>${data.info}</td>
-      <td>${data.image}</td>
       <td>${data.category}</td>
       <td>${(data.edit = `<button onclick='editProduct(${index})' class='button4'>Edit</button>`)}</td>
       <td>${(data.delete = `<button onclick='deleteProduct(${index})' class='button5'>Delete</button>`)}</td>
@@ -79,18 +89,18 @@ function clearInput() {
   document.getElementById("inputName").value = "";
   document.getElementById("inputInfo").value = "";
   document.getElementById("inputPrice").value = "";
-  document.getElementById("inputImage").value = "";
   document.getElementById("inputCategory").value = "";
 }
 
 function editProduct(index) {
+  document.getElementById("inputText").style.visibility = "visible";
   document.getElementById("inputText").innerHTML =
-    "<input id='inputID' type='number' placeholder = 'Nhap ID'/> <input id='inputName' type='text' placeholder = 'Nhap ten san pham'/> <input id='inputPrice' type='number' placeholder = 'Nhap gia san pham'/> <input id='inputInfo' type='text' placeholder = 'Nhap thong tin san pham'/> <input id='inputCategory' type='text' placeholder = 'Nhap loai san pham'/> <input id='inputImage' type='file'/> <button id='updateProduct'>Update</button>";
+    "<input id='inputID' type='number' placeholder = 'Nhap ID'/> <input id='inputName' type='text' placeholder = 'Nhap ten san pham'/> <input id='inputPrice' type='number' placeholder = 'Nhap gia san pham'/> <input id='inputInfo' type='text' placeholder = 'Nhap thong tin san pham'/> <input id='inputCategory' type='text' placeholder = 'Nhap loai san pham'/> <button id='updateProduct'>Update</button>";
   document.getElementById("inputID").value = table[index].id;
+  document.getElementById("inputID").disabled = true;
   document.getElementById("inputName").value = table[index].name;
   document.getElementById("inputPrice").value = table[index].price;
   document.getElementById("inputInfo").value = table[index].info;
-  document.getElementById("inputImage").value = table[index].image;
   document.getElementById("inputCategory").value = table[index].category;
   document
     .getElementById("updateProduct")
@@ -100,12 +110,12 @@ function editProduct(index) {
         name: document.getElementById("inputName").value,
         price: document.getElementById("inputPrice").value,
         info: document.getElementById("inputInfo").value,
-        image: document.getElementById("inputImage").value,
         category: document.getElementById("inputCategory").value,
       };
       localStorage.setItem("table", JSON.stringify(table));
       renderTable();
       clearInput();
+      document.getElementById("inputText").style.visibility = "hidden";
     });
 }
 
@@ -130,9 +140,9 @@ function searchProduct(event) {
       <th>Name</th>
       <th>Price</th>
       <th>Info</th>
-      <th>Image</th>
       <th>Category</th>
-
+      <th>Edit</th>
+      <th>Delete</th>
   </tr>
   </table>`;
   searchResult.forEach((data, index) => {
@@ -141,10 +151,12 @@ function searchProduct(event) {
       <td>${data.name}</td>
       <td>${data.price}</td>
       <td>${data.info}</td>
-      <td>${data.image}</td>
       <td>${data.category}</td>
+      <td>${(data.edit = `<button onclick='editProduct(${index})' class='button4'>Edit</button>`)}</td>
+      <td>${(data.delete = `<button onclick='deleteProduct(${index})' class='button5'>Delete</button>`)}</td>
       </tr>`;
   });
   document.getElementById("table").innerHTML = tableData;
+  document.getElementById("input").value = "";
   event.preventDefault();
 }
