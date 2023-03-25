@@ -42,12 +42,27 @@
 
         <div class="right">
             <div class="div17">
-                <input type="text" id="input">
-                <button class="button2" id="search" onclick="searchProduct(event)">Search</button>
+                <input type="text" id="inputSearch">
+                <button class="button2" id="search" onclick="searchProduct()">Search</button>
             </div>
             <div class="div18">
                 <button class="button3" id="addNew" onclick="addNew()">Add New</button>
-                <table id="table"></table>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th>Info</th>
+                            <th>Category</th>
+                            <th>Edit</th>
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableItems">
+
+                    </tbody>
+                </table>
                 <div class="div19">
                     <div class="div12">1</div>
                     <div class="div13">2</div>
@@ -60,7 +75,7 @@
         </div>
     </div>
     <script src="../js/admin.js">
-        window.onload = function() {
+        window.onload = function () {
             renderTable()
         }
     </script>
