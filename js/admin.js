@@ -13,6 +13,66 @@ function checkLogout() {
   window.location.href = "http://127.0.0.1:5500/html/login.html";
 }
 
+function renderPage(pageIndex) {
+  let pageSize = 5;
+  $.get("https://641c4f32b556e431a86b27fb.mockapi.io/product", function (data) {
+    let startIndex = (pageIndex - 1) * pageSize;
+    let endIndex = startIndex + pageSize;
+    let currentPage = data.slice(startIndex, endIndex);
+    let tablePage = document.getElementById("tablePage");
+    tablePage.innerHTML = "";
+    currentPage.forEach((item) => {
+      tablePage.innerHTML += `
+      <tr>
+      <td>${item.id}</td>
+      <td>${item.name}</td>
+      <td>${item.price}</td>
+      <td>${item.info}</td>
+      <td>${item.category}</td>
+      <td>${item.category_id}</td>
+      <td><button onclick='editProduct(${item.id})' class='button4'>Edit</button></td>
+      <td><button onclick='deleteProduct(${item.id})' class='button5'>Delete</button></td>
+      </tr>
+      `;
+    });
+    let pagination = document.getElementById("pagination");
+    pagination.innerHTML = "";
+    for (let i = 1; i <= Math.ceil(data.length / pageSize); i++) {
+      let button = document.createElement("button");
+      // button.className = 'active'
+      button.textContent = i;
+      pagination.appendChild(button);
+    }
+  });
+}
+// renderPage(0);
+pagination.addEventListener("click", (event) => {
+  console.log("aaa")
+  if (event.target.tagName === "BUTTON") {
+    let pageIndex = parseInt(event.target.textContent);
+    renderPage(pageIndex);
+
+    //let buttons = document.querySelectorAll("#pagination button");
+    // console.log(buttons)
+    // buttons.forEach((button, index) => {
+    //   if(index === pageIndex - 1){
+    //     button.classList.add('active');
+    //   }else{
+    //     button.classList.remove('active');
+    //   }
+    // })
+    // for (let i = 0; i < buttons.length; i++) {
+    //   buttons[i].addEventListener("click", function () {
+    //     let current = document.getElementsByClassName("active")[0];
+    //     console.log(current)
+    //     current[0].className = current[0].className.replace(" active", "");
+    //     this.className += " active";
+    //   });
+    // }
+  }
+});
+
+
 function addNew() {
   let inputText = document.getElementById("inputText");
   inputText.style.visibility = "visible";
@@ -45,7 +105,7 @@ function addNew() {
         method: "POST",
         data: newData,
         success: function () {
-          renderTable();
+          renderPage();
         },
       });
       clearInput();
@@ -68,27 +128,27 @@ function getCategorys() {
   );
 }
 
-function renderTable() {
-  $("#tableItems").empty();
-  $.get(
-    "https://641c4f32b556e431a86b27fb.mockapi.io/product",
-    function (table, status) {
-      for (let i = 0; i < table.length; i++) {
-        var data = table[i];
-        $("#tableItems").append(`<tr>
-         <td>${data.id}</td>
-         <td>${data.name}</td>
-         <td>${data.price}</td>
-         <td>${data.info}</td>
-         <td>${data.category}</td>
-         <td>${data.category_id}</td>
-         <td><button onclick='editProduct(${data.id})' class='button4'>Edit</button></td>
-         <td><button onclick='deleteProduct(${data.id})' class='button5'>Delete</button></td>
-         </tr>`);
-      }
-    }
-  );
-}
+// function renderTable() {
+//   $("#tableItems").empty();
+//   $.get(
+//     "https://641c4f32b556e431a86b27fb.mockapi.io/product",
+//     function (table, status) {
+//       for (let i = 0; i < table.length; i++) {
+//         var data = table[i];
+//         $("#tableItems").append(`<tr>
+//          <td>${data.id}</td>
+//          <td>${data.name}</td>
+//          <td>${data.price}</td>
+//          <td>${data.info}</td>
+//          <td>${data.category}</td>
+//          <td>${data.category_id}</td>
+//          <td><button onclick='editProduct(${data.id})' class='button4'>Edit</button></td>
+//          <td><button onclick='deleteProduct(${data.id})' class='button5'>Delete</button></td>
+//          </tr>`);
+//       }
+//     }
+//   );
+// }
 
 function clearInput() {
   document.getElementById("inputName").value = "";
@@ -127,7 +187,7 @@ function editProduct(id) {
           category_id: document.getElementById("catergorys").value,
         },
         success: function () {
-          renderTable();
+          renderPage();
         },
       });
       clearInput();
@@ -140,7 +200,7 @@ function deleteProduct(id) {
     url: `https://641c4f32b556e431a86b27fb.mockapi.io/product/${id}`,
     method: "DELETE",
     success: function (res) {
-      renderTable();
+      renderPage();
     },
   });
 }
@@ -156,15 +216,16 @@ function searchProduct() {
       let searchResult = dataSearch.filter((data) =>
         data.name.toLowerCase().includes(inputSearch)
       );
-      $("#tableItems").empty();
+      $("#tablePage").empty();
       for (let i = 0; i < searchResult.length; i++) {
         var data = searchResult[i];
-        $("#tableItems").append(`<tr>
+        $("#tablePage").append(`<tr>
          <td>${data.id}</td>
          <td>${data.name}</td>
          <td>${data.price}</td>
          <td>${data.info}</td>
          <td>${data.category}</td>
+         <td>${data.category_id}</td>
          <td><button onclick='editProduct(${data.id})' class='button4'>Edit</button></td>
          <td><button onclick='deleteProduct(${data.id})' class='button5'>Delete</button></td>
          </tr>`);

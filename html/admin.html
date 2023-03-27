@@ -10,7 +10,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 </head>
 
-<body onload="renderTable()">
+<body onload="renderPage()">
     <div class="container">
         <button onclick="checkLogin()" class="button2"
             style="cursor: pointer; background-color: rgb(31, 31, 240);">Login</button>
@@ -47,7 +47,7 @@
             </div>
             <div class="div18">
                 <button class="button3" id="addNew" onclick="addNew()">Add New</button>
-                <table>
+                <!-- <table>
                     <thead>
                         <tr>
                             <th>Id</th>
@@ -63,21 +63,40 @@
                     <tbody id="tableItems">
 
                     </tbody>
+                </table> -->
+                <!-- <div class="div19">
+                    <div class="div12" id="div12">1</div>
+                    <div class="div13" id="div13">2</div>
+                    <div class="div14" id="div14">3</div>
+                    <div class="div15" id="div15">4</div>
+                    <div class="div16" id="div16">5</div>
+                </div> -->
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th>Info</th>
+                            <th>Category</th>
+                            <th>Categorys</th>
+                            <th>Edit</th>
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablePage">
+
+                    </tbody>
                 </table>
-                <div class="div19">
-                    <div class="div12">1</div>
-                    <div class="div13">2</div>
-                    <div class="div14">3</div>
-                    <div class="div15">4</div>
-                    <div class="div16">5</div>
-                </div>
+                <div id="pagination"></div>
             </div>
             <div id="inputText"></div>
         </div>
     </div>
     <script src="../js/admin.js">
         window.onload = function () {
-            renderTable()
+            renderPage()
         }
     </script>
 </body>
