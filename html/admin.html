@@ -10,7 +10,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 </head>
 
-<body onload="renderPage()">
+<body onload="renderPage(1)">
     <div class="container">
         <button onclick="checkLogin()" class="button2"
             style="cursor: pointer; background-color: rgb(31, 31, 240);">Login</button>
@@ -64,14 +64,6 @@
 
                     </tbody>
                 </table> -->
-                <!-- <div class="div19">
-                    <div class="div12" id="div12">1</div>
-                    <div class="div13" id="div13">2</div>
-                    <div class="div14" id="div14">3</div>
-                    <div class="div15" id="div15">4</div>
-                    <div class="div16" id="div16">5</div>
-                </div> -->
-                
                 <table>
                     <thead>
                         <tr>
@@ -80,7 +72,7 @@
                             <th>Price</th>
                             <th>Info</th>
                             <th>Category</th>
-                            <th>Categorys</th>
+                            <th>Manufacture</th>
                             <th>Edit</th>
                             <th>Delete</th>
                         </tr>
@@ -95,9 +87,9 @@
         </div>
     </div>
     <script src="../js/admin.js">
-        window.onload = function () {
-            renderPage()
-        }
+        // window.onload = function () {
+        //     renderTable()
+        // }
     </script>
 </body>
 

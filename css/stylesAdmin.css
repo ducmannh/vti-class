@@ -106,6 +106,7 @@
     background-color: rgb(30, 221, 30);
     font-size: 15px;
     border-radius: 7px;
+    cursor: pointer;
 }
 
 .button3 {
@@ -118,6 +119,7 @@
     width: 80px;
     margin-top: 20px;
     margin-left: 20px;
+    cursor: pointer;
 }
 
 .div18 {
@@ -152,6 +154,7 @@ th {
     color: white;
     height: 35px;
     width: 80px;
+    cursor: pointer;
 }
 
 .button5 {
@@ -162,6 +165,7 @@ th {
     color: white;
     height: 35px;
     width: 80px;
+    cursor: pointer;
 }
 
 #inputText {
@@ -187,7 +191,7 @@ th {
     border-radius: 7px;
 }
 
-#catergorys {
+#manufacture {
     font-size: 20px;
     margin-bottom: 7px;
 }
@@ -197,7 +201,7 @@ th {
     margin-bottom: 10px;
 }
 
-#pagination>button {
+#pagination button {
     cursor: pointer;
     margin-left: 5px;
     background-color: white;
@@ -208,13 +212,7 @@ th {
     padding-right: 7px;
 }
 
-#pagination button:hover {
-    background-color: rgb(78, 78, 245);
-}
-
-/* #pagination button{
-    background-color: blue;
-} */
-.active{
-    background-color: blue;
+#pagination button.active{
+    background-color: #666;
+    color: white
 }

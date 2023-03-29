@@ -13,12 +13,16 @@ function checkLogout() {
   window.location.href = "http://127.0.0.1:5500/html/login.html";
 }
 
+let pageSize = 5;
 function renderPage(pageIndex) {
-  let pageSize = 5;
   $.get("https://641c4f32b556e431a86b27fb.mockapi.io/product", function (data) {
     let startIndex = (pageIndex - 1) * pageSize;
     let endIndex = startIndex + pageSize;
     let currentPage = data.slice(startIndex, endIndex);
+    console.log(
+      `startIndex:${startIndex} endIndex:${endIndex} pageIndex:${pageIndex}`
+    );
+    console.log(currentPage);
     let tablePage = document.getElementById("tablePage");
     tablePage.innerHTML = "";
     currentPage.forEach((item) => {
@@ -29,7 +33,7 @@ function renderPage(pageIndex) {
       <td>${item.price}</td>
       <td>${item.info}</td>
       <td>${item.category}</td>
-      <td>${item.category_id}</td>
+      <td>${item.manufacture}</td>
       <td><button onclick='editProduct(${item.id})' class='button4'>Edit</button></td>
       <td><button onclick='deleteProduct(${item.id})' class='button5'>Delete</button></td>
       </tr>
@@ -39,66 +43,49 @@ function renderPage(pageIndex) {
     pagination.innerHTML = "";
     for (let i = 1; i <= Math.ceil(data.length / pageSize); i++) {
       let button = document.createElement("button");
-      // button.className = 'active'
       button.textContent = i;
+      if (i === pageIndex) {
+        button.classList.add("active");
+      }
       pagination.appendChild(button);
     }
   });
 }
-// renderPage(0);
-pagination.addEventListener("click", (event) => {
-  console.log("aaa")
-  if (event.target.tagName === "BUTTON") {
-    let pageIndex = parseInt(event.target.textContent);
-    renderPage(pageIndex);
 
-    //let buttons = document.querySelectorAll("#pagination button");
-    // console.log(buttons)
-    // buttons.forEach((button, index) => {
-    //   if(index === pageIndex - 1){
-    //     button.classList.add('active');
-    //   }else{
-    //     button.classList.remove('active');
-    //   }
-    // })
-    // for (let i = 0; i < buttons.length; i++) {
-    //   buttons[i].addEventListener("click", function () {
-    //     let current = document.getElementsByClassName("active")[0];
-    //     console.log(current)
-    //     current[0].className = current[0].className.replace(" active", "");
-    //     this.className += " active";
-    //   });
-    // }
+document.getElementById("pagination").addEventListener("click", (e) => {
+  if (e.target.tagName === "BUTTON") {
+    let pageIndex = parseInt(e.target.textContent);
+    renderPage(pageIndex);
+    console.log(pageIndex);
   }
 });
-
 
 function addNew() {
   let inputText = document.getElementById("inputText");
   inputText.style.visibility = "visible";
   inputText.innerHTML =
-    "<input id='inputName' type='text' placeholder = 'Nhap ten san pham'/> <input id='inputPrice' type='number' placeholder = 'Nhap gia san pham'/> <input id='inputInfo' type='text' placeholder = 'Nhap thong tin san pham'/> <input id='inputCategory' type='text' placeholder = 'Nhap loai san pham'/> <select id='catergorys' onclick='getCategorys()'></select> <button id='addProduct'>Add new</button>";
+    "<input id='inputName' type='text' placeholder = 'Nhap ten san pham'/> <input id='inputPrice' type='number' placeholder = 'Nhap gia san pham'/> <input id='inputInfo' type='text' placeholder = 'Nhap thong tin san pham'/> <input id='inputCategory' type='text' placeholder = 'Nhap loai san pham'/> <select id='manufacture' onclick='getManufacture()'></select> <button id='addProduct'>Add new</button>";
 
   document.getElementById("addProduct").addEventListener("click", function () {
     let inputName = $("#inputName").val();
     let inputInfo = $("#inputInfo").val();
     let inputPrice = $("#inputPrice").val();
     let inputCategory = $("#inputCategory").val();
-    let inputCategorys = $("#catergorys").val();
-    console.log(inputCategorys);
+    let inputManufacture = $("#manufacture").val();
+    console.log(inputManufacture);
     if (
       inputName &&
       inputInfo &&
       inputPrice &&
       inputCategory &&
-      inputCategorys
+      inputManufacture
     ) {
       let newData = {
         name: inputName,
         price: inputPrice,
         info: inputInfo,
         category: inputCategory,
-        category_id: inputCategorys,
+        manufacture: inputManufacture,
       };
       $.ajax({
         url: "https://641c4f32b556e431a86b27fb.mockapi.io/product",
@@ -116,13 +103,13 @@ function addNew() {
   });
 }
 
-function getCategorys() {
+function getManufacture() {
   $.get(
     `https://641c4f32b556e431a86b27fb.mockapi.io/category`,
     function (items) {
       for (let i = 0; i < items.length; i++) {
         var item = items[i];
-        $("#catergorys").append(`<option>${item.name}</option>`);
+        $("#manufacture").append(`<option>${item.name}</option>`);
       }
     }
   );
@@ -141,7 +128,7 @@ function getCategorys() {
 //          <td>${data.price}</td>
 //          <td>${data.info}</td>
 //          <td>${data.category}</td>
-//          <td>${data.category_id}</td>
+//          <td>${data.manufacture}</td>
 //          <td><button onclick='editProduct(${data.id})' class='button4'>Edit</button></td>
 //          <td><button onclick='deleteProduct(${data.id})' class='button5'>Delete</button></td>
 //          </tr>`);
@@ -160,7 +147,7 @@ function clearInput() {
 function editProduct(id) {
   document.getElementById("inputText").style.visibility = "visible";
   document.getElementById("inputText").innerHTML =
-    "<input id='inputName' type='text' placeholder = 'Nhap ten san pham'/> <input id='inputPrice' type='number' placeholder = 'Nhap gia san pham'/> <input id='inputInfo' type='text' placeholder = 'Nhap thong tin san pham'/> <input id='inputCategory' type='text' placeholder = 'Nhap loai san pham'/> <select id='catergorys' onclick='getCategorys()'></select> <button id='updateProduct'>Update</button>";
+    "<input id='inputName' type='text' placeholder = 'Nhap ten san pham'/> <input id='inputPrice' type='number' placeholder = 'Nhap gia san pham'/> <input id='inputInfo' type='text' placeholder = 'Nhap thong tin san pham'/> <input id='inputCategory' type='text' placeholder = 'Nhap loai san pham'/> <select id='manufacture' onclick='getManufacture()'></select> <button id='updateProduct'>Update</button>";
   $.ajax({
     url: `https://641c4f32b556e431a86b27fb.mockapi.io/product/${id}`,
     type: "GET",
@@ -170,7 +157,7 @@ function editProduct(id) {
       document.getElementById("inputPrice").value = data.price;
       document.getElementById("inputInfo").value = data.info;
       document.getElementById("inputCategory").value = data.category;
-      document.getElementById("catergorys").value = data.category_id;
+      document.getElementById("manufacture").value = data.manufacture;
     },
   });
   document
@@ -184,7 +171,7 @@ function editProduct(id) {
           price: document.getElementById("inputPrice").value,
           info: document.getElementById("inputInfo").value,
           category: document.getElementById("inputCategory").value,
-          category_id: document.getElementById("catergorys").value,
+          manufacture: document.getElementById("manufacture").value,
         },
         success: function () {
           renderPage();
@@ -225,7 +212,7 @@ function searchProduct() {
          <td>${data.price}</td>
          <td>${data.info}</td>
          <td>${data.category}</td>
-         <td>${data.category_id}</td>
+         <td>${data.manufacture}</td>
          <td><button onclick='editProduct(${data.id})' class='button4'>Edit</button></td>
          <td><button onclick='deleteProduct(${data.id})' class='button5'>Delete</button></td>
          </tr>`);
