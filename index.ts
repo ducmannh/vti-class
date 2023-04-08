@@ -13,12 +13,12 @@ var memorizeFunction = function(functionUsing: Function){
         }
     }
 }
-function age(b:number):number {
+function age1(b:number):number {
     let a = 2023;
     return a-b;
 }
 
-var memorizeAge = memorizeFunction(age);
+var memorizeAge = memorizeFunction(age1);
 console.log("tuoi", memorizeAge(2000));
 console.log("tuoi", memorizeAge(2000));
 
