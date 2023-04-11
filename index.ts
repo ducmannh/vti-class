@@ -21,3 +21,6 @@
 // var memorizeAge = memorizeFunction(age1);
 // console.log("tuoi", memorizeAge(2000));
 // console.log("tuoi", memorizeAge(2000));
+
+
+
