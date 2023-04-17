@@ -1,4 +1,9 @@
-import ModalPage from "./ModalPage";
+import { Button } from "flowbite-react";
+import { Modal } from "flowbite-react";
+import { ModalBody } from "flowbite-react/lib/esm/components/Modal/ModalBody";
+import { ModalHeader } from "flowbite-react/lib/esm/components/Modal/ModalHeader";
+import { ModalFooter } from "flowbite-react/lib/esm/components/Modal/ModalFooter";
+import { useState } from "react";
 
 export default function AdminPage() {
   const data = [
@@ -58,24 +63,82 @@ export default function AdminPage() {
       delete: "Delete",
     },
   ];
-  const showModal = () => {
-    return <ModalPage />;
-  }
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
   return (
     <div>
-      <button
-        type="button"
-        className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-        data-modal-target="defaultModal"
-        data-modal-toggle="defaultModal"
-        onClick={showModal}
-      >
-        Create New Account
-      </button>
-
+       <div>
+      <div className="m-6">
+        <Button onClick={handleOpen}>Create New Account</Button>
+      </div>
+      <Modal show={open} onClose={handleClose}>
+        <ModalHeader>Account</ModalHeader>
+        <ModalBody>
+          <div className="mb-6">
+            <label className="block mb-2 text-sm font-medium text-gray-900">
+              Email:
+            </label>
+            <input
+              type="text"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+              placeholder="Input Email"
+            />
+          </div>
+          <div className="mb-6">
+            <label className="block mb-2 text-sm font-medium text-gray-900">
+              Username:
+            </label>
+            <input
+              type="text"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+              placeholder="Input Username"
+            />
+          </div>
+          <div className="mb-6">
+            <label className="block mb-2 text-sm font-medium text-gray-900">
+              Fullname:
+            </label>
+            <input
+              type="text"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+              placeholder="Input Fullname"
+            />
+          </div>
+          <div className="mb-6">
+            <label className="block mb-2 text-sm font-medium text-gray-900">
+              Select a Department
+            </label>
+            <select
+              id="countries"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            >
+              <option value="Giam doc">Giam doc</option>
+              <option value="Thu Ky">Thu Ky</option>
+            </select>
+          </div>
+          <div className="mb-6">
+            <label className="block mb-2 text-sm font-medium text-gray-900">
+              Select a Position
+            </label>
+            <select
+              id="countries"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            >
+              <option value="Test">Test</option>
+              <option value="Dev">Dev</option>
+            </select>
+          </div>
+        </ModalBody>
+        <ModalFooter>
+          <Button onClick={handleClose}>Create</Button>
+          <Button onClick={handleClose}>Update</Button>
+        </ModalFooter>
+      </Modal>
+    </div>
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-2">
-        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 text-center">
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <table className="w-full text-sm text-center text-gray-500">
+          <thead className="text-xs text-gray-700 uppercase bg-gray-300">
             <tr>
               <th scope="col" className="px-6 py-3">
                 ID
@@ -111,27 +174,27 @@ export default function AdminPage() {
               return (
                 <tr
                   key={index}
-                  className="bg-white border-b dark:bg-gray-900 dark:border-gray-700"
+                  className="bg-white border-b"
                 >
-                  <td className="px-6 py-4">{item.id}</td>
-                  <td className="px-6 py-4">{item.email}</td>
-                  <td className="px-6 py-4">{item.username}</td>
-                  <td className="px-6 py-4">{item.fullname}</td>
-                  <td className="px-6 py-4">{item.departmant}</td>
-                  <td className="px-6 py-4">{item.position}</td>
-                  <td className="px-6 py-4">{item.create_date}</td>
-                  <td className="px-6 py-4">
+                  <td className="px-6 py-3">{item.id}</td>
+                  <td className="px-6 py-3">{item.email}</td>
+                  <td className="px-6 py-3">{item.username}</td>
+                  <td className="px-6 py-3">{item.fullname}</td>
+                  <td className="px-6 py-3">{item.departmant}</td>
+                  <td className="px-6 py-3">{item.position}</td>
+                  <td className="px-6 py-3">{item.create_date}</td>
+                  <td className="px-6 py-3">
                     <button
                       type="button"
-                      className="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-4 py-2 mr-2 mb-2 dark:focus:ring-yellow-900"
+                      className="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-4 py-2"
                     >
                       {item.edit}
                     </button>
                   </td>
-                  <td className="px-6 py-4">
+                  <td className="px-6 py-3">
                     <button
                       type="button"
-                      className="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-4 py-2 mr-2 mb-2 dark:focus:ring-yellow-900"
+                      className="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-4 py-2"
                     >
                       {item.delete}
                     </button>
@@ -142,8 +205,6 @@ export default function AdminPage() {
           </tbody>
         </table>
       </div>
-
-      {/* <ModalPage/> */}
     </div>
   );
 }
