@@ -37,13 +37,13 @@ export default function Questions() {
             Ready to watch? Enter your email to create or restart your
             membership
           </p>
-          <div>
+          <div className="flex flex-col items-center sm:flex-row">
             <input
               type="text"
-              className="rounded-md w-96 px-4 py-4 text-white bg-slate-950 text-sm lg:text-xl"
+              className="rounded-md w-80 px-4 py-4 text-white bg-slate-900 text-sm sm:w-96 lg:text-xl"
               placeholder="Email address"
             />
-            <button className="text-white bg-red-700 font-medium rounded-md px-5 py-4 ml-4 w-36 text-sm lg:text-xl">
+            <button className="text-white bg-red-700 font-medium rounded-md px-5 py-3 mt-4 w-36 text-lg sm:ml-3 sm:mt-0 lg:text-xl lg:py-4">
               Get Started
             </button>
           </div>
