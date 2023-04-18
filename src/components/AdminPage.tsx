@@ -136,6 +136,7 @@ export default function AdminPage() {
         </ModalFooter>
       </Modal>
     </div>
+    
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-2">
         <table className="w-full text-sm text-center text-gray-500">
           <thead className="text-xs text-gray-700 uppercase bg-gray-300">
