@@ -1,16 +1,24 @@
 import { useState } from "react";
 import FormDataRegister from "./FormDataRegister";
+import { useForm } from "react-hook-form";
+import "../../App.css";
 
 export default function FormRegister() {
-  const [fullName, setFullName] = useState("");
-  const [userName, setUserName] = useState("");
-  const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
   const [job, setJob] = useState("");
   const [favourite, setFavourite] = useState<any>([]);
-  const [address, setAddress] = useState("");
-  const [date, setDate] = useState("");
+  const [dataClient, setDataClient] = useState<any>([]);
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+  const onSubmit = (data: any) => {
+    setDataClient(data);
+  };
+  console.log(dataClient)
 
   const handleCKChange = (e: any) => {
     const value = e.target.value;
@@ -22,10 +30,10 @@ export default function FormRegister() {
       setFavourite(favourite.filter((item: any) => item !== value));
     }
   };
-  console.log(favourite);
+
   return (
     <div className="ml-3 flex">
-      <div>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <h1 className="text-4xl mb-2 text-center">Register</h1>
         <p className="mb-2 italic text-center">
           Please <b>fill in this form</b> to create an account
@@ -38,8 +46,7 @@ export default function FormRegister() {
             type="text"
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             placeholder="Input your fullname..."
-            value={fullName}
-            onChange={(e) => setFullName(e.target.value)}
+            {...register("fullName")}
           />
         </div>
         <div className="mb-2">
@@ -50,8 +57,7 @@ export default function FormRegister() {
             type="text"
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             placeholder="Input your username..."
-            value={userName}
-            onChange={(e) => setUserName(e.target.value)}
+            {...register("userName")}
           />
         </div>
         <div className="mb-2">
@@ -62,8 +68,7 @@ export default function FormRegister() {
             type="text"
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             placeholder="Input your password..."
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            {...register("password")}
           />
         </div>
         <div className="mb-2">
@@ -74,8 +79,7 @@ export default function FormRegister() {
             type="text"
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             placeholder="Input your email..."
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            {...register("email")}
           />
         </div>
         <div className="mb-2">
@@ -86,14 +90,13 @@ export default function FormRegister() {
             type="number"
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             placeholder="Input your phone number..."
-            value={phoneNumber}
-            onChange={(e) => setPhoneNumber(e.target.value)}
+            {...register("phoneNumber")}
           />
         </div>
         <div className="mb-2">
-          <label className="block mb-2 text-md font-medium text-gray-900">
+          <p className="block mb-2 text-md font-medium text-gray-900">
             Input Object
-          </label>
+          </p>
           <div className="flex">
             <div className="flex items-center rounded-lg">
               <input
@@ -108,9 +111,9 @@ export default function FormRegister() {
                   }
                 }}
               />
-              <label className="w-full text-md font-medium text-gray-900">
+              <p className="w-full text-md font-medium text-gray-900">
                 Student
-              </label>
+              </p>
             </div>
             <div className="flex items-center rounded-lg">
               <input
@@ -125,14 +128,14 @@ export default function FormRegister() {
                   }
                 }}
               />
-              <label className="w-full text-md font-medium text-gray-900">
+              <p className="w-full text-md font-medium text-gray-900">
                 Teacher
-              </label>
+              </p>
             </div>
           </div>
         </div>
 
-        <div className="mb-2">
+        <div className="mb-2 textCSS">
           <div className="w-full mb-2 text-md font-medium text-gray-900">
             Favourite
           </div>
@@ -142,7 +145,7 @@ export default function FormRegister() {
             className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded"
             onChange={handleCKChange}
           />
-          <label className="ml-2 mr-8 text-md font-medium text-gray-900 ">
+          <label className="ml-2 mr-8 text-md font-medium text-gray-900">
             Badminton
           </label>
 
@@ -173,8 +176,7 @@ export default function FormRegister() {
           </label>
           <select
             className="bg-gray-50 border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-black focus:border-black block w-full p-2.5"
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
+            {...register("address")}
           >
             <option value=""></option>
             <option value="Bắc Giang">Bắc Giang</option>
@@ -191,22 +193,23 @@ export default function FormRegister() {
             type="date"
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             placeholder="Input your fullname..."
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
+            {...register("date")}
           />
         </div>
-      </div>
+
+        <input
+          type="submit"
+          className="bg-sky-500 px-5 py-2 rounded-lg text-white text-lg"
+          onClick={handleOpen}
+        />
+      </form>
 
       <FormDataRegister
-        fullName={fullName}
-        userName={userName}
-        password={password}
-        email={email}
-        phoneNumber={phoneNumber}
-        address={address}
-        date={date}
         job={job}
         favourite={favourite}
+        dataClient={dataClient}
+        open={open}
+        handleClose={handleClose}
       />
     </div>
   );
