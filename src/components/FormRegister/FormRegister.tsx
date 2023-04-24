@@ -8,7 +8,7 @@ export default function FormRegister() {
   const [favourite, setFavourite] = useState<any>([]);
   const [dataClient, setDataClient] = useState<any>([]);
   const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
+  // const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const {
     register,
@@ -17,8 +17,9 @@ export default function FormRegister() {
   } = useForm();
   const onSubmit = (data: any) => {
     setDataClient(data);
+    setOpen(true);
   };
-  console.log(dataClient)
+  console.log(dataClient);
 
   const handleCKChange = (e: any) => {
     const value = e.target.value;
@@ -200,7 +201,7 @@ export default function FormRegister() {
         <input
           type="submit"
           className="bg-sky-500 px-5 py-2 rounded-lg text-white text-lg"
-          onClick={handleOpen}
+          // onClick={handleOpen}
         />
       </form>
 

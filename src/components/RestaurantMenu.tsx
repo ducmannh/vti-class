@@ -2,24 +2,32 @@ import { useState } from "react";
 import "../App.css";
 
 interface Menu {
+  id: number;
   nameValue: string;
   description: string;
-  price: string;
+  price: number;
   imageValue: string;
   like: string;
+  handleAddMenu: any;
+  menu: any;
+  setMenu: any;
 }
 
 export default function RestaurantMenu({
+  id,
   nameValue,
   description,
   price,
   imageValue,
   like,
+  handleAddMenu,
 }: Menu) {
   const [love, setLove] = useState(false);
   const handleClick = () => {
-    setLove(!love);
+    setLove(!love);  
+    handleAddMenu(nameValue, price, id, love);
   };
+
   return (
     <div className="div0">
       <div className="div1">
