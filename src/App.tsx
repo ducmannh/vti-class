@@ -1,5 +1,5 @@
+import Home from "./components/Example_Lesson18/Home";
 import FormRegister from "./components/FormRegister/FormRegister";
-import Home from "./components/Home";
 import Restaurant from "./components/Restaurant/Restaurant";
 
 
