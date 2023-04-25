@@ -1,13 +1,14 @@
 import FormRegister from "./components/FormRegister/FormRegister";
 import Home from "./components/Home";
-import Restaurant from "./components/Restaurant";
+import Restaurant from "./components/Restaurant/Restaurant";
+
 
 function App() {
   return (
     <div>
       {/* <Home /> */}
-      <Restaurant />
       {/* <FormRegister /> */}
+      <Restaurant />
     </div>
   );
 }
