@@ -9,8 +9,6 @@ interface Menu {
   imageValue: string;
   like: string;
   handleAddMenu: any;
-  menu: any;
-  setMenu: any;
 }
 
 export default function RestaurantMenu({
@@ -24,10 +22,10 @@ export default function RestaurantMenu({
 }: Menu) {
   const [love, setLove] = useState(false);
   const handleClick = () => {
-    setLove(!love);  
+    setLove(!love);
     handleAddMenu(nameValue, price, id, love);
   };
-
+  console.log(love)
   return (
     <div className="div0">
       <div className="div1">
@@ -38,7 +36,10 @@ export default function RestaurantMenu({
         </div>
         <div className="div3">
           <p>{price}</p>
-          <p onClick={handleClick} className={`love ${love ? "active" : ""}`}>
+          <p
+            onClick={handleClick}
+            className={`love ${love ? "active" : ""}`}
+          >
             {like}
           </p>
         </div>

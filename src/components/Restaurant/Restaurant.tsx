@@ -65,7 +65,6 @@ export default function Restaurant() {
       setTotalPrice(totalPrice + price);
     }
   };
-
   return (
     <div>
       <h1 style={{ textAlign: "center" }}>Wild Restaurant Menu</h1>
@@ -80,12 +79,11 @@ export default function Restaurant() {
             imageValue={item.imageValue}
             like={item.like}
             handleAddMenu={handleAddMenu}
-            menu={menu}
-            setMenu={setMenu}
           />
         );
       })}
-      {/* <button onClick={handleAdd}>Submit</button> */}
+      {/* <button onClick={handleClickData}>Submit</button> */}
+      <p>Total Price: {totalPrice}</p>
       {menu.map((item: any, index: number) => {
         return (
           <div key={index}>
@@ -94,7 +92,6 @@ export default function Restaurant() {
           </div>
         );
       })}
-      <p>Total Price: {totalPrice}</p>
     </div>
   );
 }
