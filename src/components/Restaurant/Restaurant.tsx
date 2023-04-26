@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { RestaurantDataContext } from "./RestaurantContext";
 import RestaurantMenu from "./RestaurantMenu";
+import { useContext, useState } from "react";
 
 export default function Restaurant() {
   const menuData = [
@@ -45,6 +46,9 @@ export default function Restaurant() {
     },
   ];
   const [menu, setMenu] = useState<any>([]);
+  // const {menu, setMenu} = useContext(RestaurantDataContext)
+  // console.log(menu)
+  const { show, setShow } = useContext(RestaurantDataContext);
   const [totalPrice, setTotalPrice] = useState(0);
   const handleAddMenu: any = (
     nameValue: string,
@@ -65,10 +69,47 @@ export default function Restaurant() {
       setTotalPrice(totalPrice + price);
     }
   };
+  const handlePayment = () => {
+    setShow(!show);
+  };
   return (
     <div>
       <h1 style={{ textAlign: "center" }}>Wild Restaurant Menu</h1>
-      {menuData.map((item, index) => {
+      {show === true &&  (
+        <div>
+          {menuData.map((item, index) => {
+            return (
+              <RestaurantMenu
+                key={index}
+                id={item.id}
+                nameValue={item.nameValue}
+                description={item.description}
+                price={item.price}
+                imageValue={item.imageValue}
+                like={item.like}
+                handleAddMenu={handleAddMenu}
+              />
+            );
+          })}
+        </div>
+      )}
+
+      {show === false && (
+        <div>
+          {" "}
+          <p>Total Price: {totalPrice}</p>
+          {menu.map((item: any, index: number) => {
+            return (
+              <div key={index}>
+                <p>Ban da chon mon : {item.nameValue}</p>
+                <p>Gia : {item.price}</p>
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {/* {menuData.map((item, index) => {
         return (
           <RestaurantMenu
             key={index}
@@ -81,9 +122,9 @@ export default function Restaurant() {
             handleAddMenu={handleAddMenu}
           />
         );
-      })}
-      {/* <button onClick={handleClickData}>Submit</button> */}
-      <p>Total Price: {totalPrice}</p>
+      })} */}
+
+      {/* <p>Total Price: {totalPrice}</p>
       {menu.map((item: any, index: number) => {
         return (
           <div key={index}>
@@ -91,7 +132,9 @@ export default function Restaurant() {
             <p>Gia : {item.price}</p>
           </div>
         );
-      })}
+      })} */}
+
+      <button onClick={handlePayment}>Thanh toan</button>
     </div>
   );
 }

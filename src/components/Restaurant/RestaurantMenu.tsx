@@ -1,5 +1,7 @@
-import { useState } from "react";
 import "../../App.css";
+import { useStepperContext } from "@mui/material";
+import { useContext, useState } from "react";
+import { RestaurantDataContext } from "./RestaurantContext";
 
 interface Menu {
   id: number;
@@ -25,7 +27,8 @@ export default function RestaurantMenu({
     setLove(!love);
     handleAddMenu(nameValue, price, id, love);
   };
-  console.log(love)
+
+
   return (
     <div className="div0">
       <div className="div1">
