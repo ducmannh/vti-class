@@ -1,6 +1,5 @@
 import "../../App.css";
-import { useContext, useState, useEffect } from "react";
-import { RestaurantDataContext } from "./RestaurantContext";
+import {  useState, useEffect } from "react";
 
 interface Menu {
   id: number;
@@ -9,7 +8,6 @@ interface Menu {
   price: number;
   imageValue: string;
   like: string;
-  // quantity: number;
   handleAddMenu: any;
   handleAdd: any;
   handleMinus: any;
