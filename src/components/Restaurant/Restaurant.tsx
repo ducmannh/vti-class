@@ -1,6 +1,6 @@
 import { RestaurantDataContext } from "./RestaurantContext";
 import RestaurantMenu from "./RestaurantMenu";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 export default function Restaurant() {
   const menuData = [
@@ -47,39 +47,120 @@ export default function Restaurant() {
   ];
   const [menu, setMenu] = useState<any>([]);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [money, setMoney] = useState(30);
   const { show, setShow } = useContext(RestaurantDataContext);
-  const { likeCount, setLikeCount } = useContext(RestaurantDataContext);
-  
-  const handleAddMenu: any = (
+
+  const handleAddMenu: any = (price: number, love: boolean) => {
+    if (love) {
+      setTotalPrice(totalPrice - price);
+    } else {
+      setTotalPrice(totalPrice + price);
+    }
+  };
+
+  // BẤM LIKE ĐỂ xEM SỰ THAY ĐỔI CỦA GIÁ
+  // useEffect(() => {
+  //   setMoney(30 - totalPrice);
+  //   if (totalPrice > 30) {
+  //     alert("you don't have enough money");
+  //   }
+  // }, [totalPrice]);
+
+  const handleAdd = (
+    id: number,
     nameValue: string,
     price: number,
-    id: number,
-    love: boolean
+    quantity: number
   ) => {
-    const newMenu = {
+    const addMenu = {
+      id,
       nameValue,
       price,
-      id,
+      quantity,
     };
-    if (love) {
-      setMenu(menu.filter((item: any) => item.id !== newMenu.id));
-      setTotalPrice(totalPrice - price);
-      setLikeCount(likeCount - 1);
-    } else {
-      setMenu([...menu, newMenu]);
-      setTotalPrice(totalPrice + price);
-      setLikeCount(likeCount + 1);
-    }
+    const existingMenu = [...menu, addMenu].find(
+      (item: any) => item.id === addMenu.id
+    );
+
+    const addMenuQuantity = {
+      ...existingMenu,
+      quantity: existingMenu.quantity + 1,
+    };
+    setMenu([...menu.filter((item: any) => item.id !== id), addMenuQuantity]);
+    setTotalPrice(totalPrice + price);
+  };
+
+  const handleMinus = (
+    id: number,
+    nameValue: string,
+    price: number,
+    quantity: number
+  ) => {
+    const minusMenu = {
+      id,
+      nameValue,
+      price,
+      quantity,
+    };
+    const existingMenu = [...menu, minusMenu].find(
+      (item: any) => item.id === minusMenu.id
+    );
+    const minusMenuQuantity = {
+      ...existingMenu,
+      quantity: existingMenu.quantity - 1,
+    };
+    setMenu([...menu.filter((item: any) => item.id !== id), minusMenuQuantity]);
+    setTotalPrice(totalPrice - price);
   };
 
   const handlePayment = () => {
     setShow(!show);
   };
 
-  const handleDelete = (id: number, price: number) => {
-    setMenu(menu.filter((item: any) => item.id !== id));
+  const handleDelete = (id: number) => {
+    const filteredMenu = menu.filter((item: any) => item.id !== id);
+    const newTotalPrice = filteredMenu.reduce(
+      (sum: number, item: any) => sum + item.price * item.quantity,
+      0
+    );
+    setMenu(filteredMenu);
+    setTotalPrice(newTotalPrice);
+  };
+
+  const addQuantity = (id: number, price: number) => {
+    setMenu(
+      menu.map((item: any) => {
+        if (item.id === id) {
+          return {
+            ...item,
+            quantity: item.quantity + 1,
+          };
+        } else {
+          return item;
+        }
+      })
+    );
+    setTotalPrice(totalPrice + price);
+  };
+
+  const minusQuantity = (id: number, price: number, quantity: number) => {
+    setMenu(
+      menu.map((item: any) => {
+        if (item.id === id) {
+          return {
+            ...item,
+            quantity: item.quantity - 1,
+          };
+        } else {
+          return item;
+        }
+      })
+    );
     setTotalPrice(totalPrice - price);
-    setLikeCount(likeCount - 1);
+
+    if (quantity === 1) {
+      handleDelete(id);
+    }
   };
 
   return (
@@ -89,6 +170,9 @@ export default function Restaurant() {
       </h1>
       {show === true && (
         <div>
+          {/* <h1 style={{ textAlign: "center", fontSize: "20px" }}>
+            You have {money}
+          </h1> */}
           {menuData.map((item, index) => {
             return (
               <RestaurantMenu
@@ -100,6 +184,8 @@ export default function Restaurant() {
                 imageValue={item.imageValue}
                 like={item.like}
                 handleAddMenu={handleAddMenu}
+                handleAdd={handleAdd}
+                handleMinus={handleMinus}
               />
             );
           })}
@@ -108,11 +194,12 @@ export default function Restaurant() {
 
       {show === false && (
         <div className="flex flex-col items-center">
-          <table className="table-fixed text-xl">
+          <table className="table-fixed text-xl text-center">
             <thead>
               <tr>
                 <th className="px-4 py-2">Food Name</th>
                 <th className="px-4 py-2">Price</th>
+                <th className="px-4 py-2">Quantity</th>
                 <th className="px-4 py-2">Delete</th>
               </tr>
             </thead>
@@ -124,9 +211,27 @@ export default function Restaurant() {
                     <td className="px-4 py-2">{item.price}</td>
                     <td className="px-4 py-2">
                       {" "}
+                      <span
+                        style={{ cursor: "pointer" }}
+                        onClick={() => addQuantity(item.id, item.price)}
+                      >
+                        +
+                      </span>{" "}
+                      {item.quantity}{" "}
+                      <span
+                        style={{ cursor: "pointer" }}
+                        onClick={() =>
+                          minusQuantity(item.id, item.price, item.quantity)
+                        }
+                      >
+                        -
+                      </span>{" "}
+                    </td>
+                    <td className="px-4 py-2">
+                      {" "}
                       <button
                         className="bg-red-500 px-5 py-2 rounded-lg text-white text-md"
-                        onClick={() => handleDelete(item.id, item.price)}
+                        onClick={() => handleDelete(item.id)}
                       >
                         Delete
                       </button>{" "}
@@ -146,9 +251,6 @@ export default function Restaurant() {
           className="bg-sky-500 px-5 py-2 rounded-lg text-white text-lg relative"
         >
           Payment
-          <span className="absolute bottom-7 left-24 rounded-full bg-red-500 text-white px-2 py-1 text-xs">
-            {likeCount}
-          </span>
         </button>
       </div>
     </div>
