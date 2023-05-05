@@ -50,21 +50,13 @@ export default function Restaurant() {
   const [money, setMoney] = useState(30);
   const { show, setShow } = useContext(RestaurantDataContext);
 
-  const handleAddMenu: any = (price: number, love: boolean) => {
-    if (love) {
-      setTotalPrice(totalPrice - price);
-    } else {
-      setTotalPrice(totalPrice + price);
-    }
-  };
-
-  // BẤM LIKE ĐỂ xEM SỰ THAY ĐỔI CỦA GIÁ
-  // useEffect(() => {
-  //   setMoney(30 - totalPrice);
-  //   if (totalPrice > 30) {
-  //     alert("you don't have enough money");
+  // const handleAddMenu: any = (price: number, love: boolean) => {
+  //   if (love) {
+  //     setTotalPrice(totalPrice - price);
+  //   } else {
+  //     setTotalPrice(totalPrice + price);
   //   }
-  // }, [totalPrice]);
+  // };
 
   const handleAdd = (
     id: number,
@@ -170,9 +162,9 @@ export default function Restaurant() {
       </h1>
       {show === true && (
         <div>
-          {/* <h1 style={{ textAlign: "center", fontSize: "20px" }}>
+          <h1 style={{ textAlign: "center", fontSize: "20px" }}>
             You have {money}
-          </h1> */}
+          </h1>
           {menuData.map((item, index) => {
             return (
               <RestaurantMenu
@@ -183,9 +175,12 @@ export default function Restaurant() {
                 price={item.price}
                 imageValue={item.imageValue}
                 like={item.like}
-                handleAddMenu={handleAddMenu}
+                // handleAddMenu={handleAddMenu}
                 handleAdd={handleAdd}
                 handleMinus={handleMinus}
+                money={money}
+                totalPrice={totalPrice}
+                setMoney={setMoney}
               />
             );
           })}
