@@ -8,7 +8,7 @@ export default function Restaurant() {
       id: 1,
       nameValue: "Caesar Salad",
       description: "The original Caesar Salad recipe",
-      price: 12,
+      price: 2,
       imageValue: "src/assets/salad.png",
       like: "like",
     },
@@ -16,7 +16,7 @@ export default function Restaurant() {
       id: 2,
       nameValue: "Spagetti Carbonara",
       description: "Better than your nonna! All local and fresh ingredients",
-      price: 15,
+      price: 5,
       imageValue: "src/assets/spagetti.jpeg",
       like: "like",
     },
@@ -24,7 +24,7 @@ export default function Restaurant() {
       id: 3,
       nameValue: "Grilled Whole Fish",
       description: "Fish of the day, grilled whole with a side of vegetables",
-      price: 13,
+      price: 3,
       imageValue: "src/assets/fish.jpg",
       like: "like",
     },
@@ -32,7 +32,7 @@ export default function Restaurant() {
       id: 4,
       nameValue: "Fish",
       description: "Fish of the day, grilled whole with a side of vegetables",
-      price: 14,
+      price: 8,
       imageValue: "src/assets/fish.jpg",
       like: "like",
     },
@@ -40,7 +40,7 @@ export default function Restaurant() {
       id: 5,
       nameValue: "Pizza",
       description: "Fish of the day, grilled whole with a side of vegetables",
-      price: 16,
+      price: 9,
       imageValue: "src/assets/fish.jpg",
       like: "like",
     },
@@ -48,15 +48,9 @@ export default function Restaurant() {
   const [menu, setMenu] = useState<any>([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [money, setMoney] = useState(30);
-  const { show, setShow } = useContext(RestaurantDataContext);
-
-  // const handleAddMenu: any = (price: number, love: boolean) => {
-  //   if (love) {
-  //     setTotalPrice(totalPrice - price);
-  //   } else {
-  //     setTotalPrice(totalPrice + price);
-  //   }
-  // };
+  const [show, setShow] = useState(true);
+  const { disabledBtn, setDisabledBtn } = useContext(RestaurantDataContext);
+  const { showAdd, setShowAdd } = useContext(RestaurantDataContext);
 
   const handleAdd = (
     id: number,
@@ -64,22 +58,16 @@ export default function Restaurant() {
     price: number,
     quantity: number
   ) => {
-    const addMenu = {
-      id,
-      nameValue,
-      price,
-      quantity,
-    };
-    const existingMenu = [...menu, addMenu].find(
-      (item: any) => item.id === addMenu.id
-    );
-
-    const addMenuQuantity = {
-      ...existingMenu,
-      quantity: existingMenu.quantity + 1,
-    };
-    setMenu([...menu.filter((item: any) => item.id !== id), addMenuQuantity]);
+    const existingMenu = menu.find((item: any) => item.id === id);
+    const updatedMenu = existingMenu
+      ? menu.map((item: any) =>
+          item.id === id ? { ...item, quantity: item.quantity + 1 } : item
+        )
+      : [...menu, { id, nameValue, price, quantity: quantity + 1 }];
+    setMenu(updatedMenu);
     setTotalPrice(totalPrice + price);
+
+    if (price > money) alert("You don't have enough money");
   };
 
   const handleMinus = (
@@ -88,20 +76,13 @@ export default function Restaurant() {
     price: number,
     quantity: number
   ) => {
-    const minusMenu = {
-      id,
-      nameValue,
-      price,
-      quantity,
-    };
-    const existingMenu = [...menu, minusMenu].find(
-      (item: any) => item.id === minusMenu.id
-    );
-    const minusMenuQuantity = {
-      ...existingMenu,
-      quantity: existingMenu.quantity - 1,
-    };
-    setMenu([...menu.filter((item: any) => item.id !== id), minusMenuQuantity]);
+    const existingMenu = menu.find((item: any) => item.id === id);
+    const updatedMenu = existingMenu
+      ? menu.map((item: any) =>
+          item.id === id ? { ...item, quantity: item.quantity - 1 } : item
+        )
+      : [...menu, { id, nameValue, price, quantity: quantity - 1 }];
+    setMenu(updatedMenu);
     setTotalPrice(totalPrice - price);
   };
 
@@ -119,41 +100,17 @@ export default function Restaurant() {
     setTotalPrice(newTotalPrice);
   };
 
-  const addQuantity = (id: number, price: number) => {
-    setMenu(
-      menu.map((item: any) => {
-        if (item.id === id) {
-          return {
-            ...item,
-            quantity: item.quantity + 1,
-          };
-        } else {
-          return item;
-        }
-      })
-    );
-    setTotalPrice(totalPrice + price);
-  };
-
-  const minusQuantity = (id: number, price: number, quantity: number) => {
-    setMenu(
-      menu.map((item: any) => {
-        if (item.id === id) {
-          return {
-            ...item,
-            quantity: item.quantity - 1,
-          };
-        } else {
-          return item;
-        }
-      })
-    );
-    setTotalPrice(totalPrice - price);
-
-    if (quantity === 1) {
-      handleDelete(id);
+  useEffect(() => {
+    const newMoney = 30 - totalPrice;
+    if (newMoney < 0) {
+      setShowAdd(false);
+      setDisabledBtn(true);
+    } else {
+      setMoney(newMoney);
+      setShowAdd(true);
+      setDisabledBtn(false);
     }
-  };
+  }, [totalPrice]);
 
   return (
     <div>
@@ -175,7 +132,6 @@ export default function Restaurant() {
                 price={item.price}
                 imageValue={item.imageValue}
                 like={item.like}
-                // handleAddMenu={handleAddMenu}
                 handleAdd={handleAdd}
                 handleMinus={handleMinus}
                 money={money}
@@ -189,6 +145,9 @@ export default function Restaurant() {
 
       {show === false && (
         <div className="flex flex-col items-center">
+          <h1 style={{ textAlign: "center", fontSize: "20px" }}>
+            You have {money}
+          </h1>
           <table className="table-fixed text-xl text-center">
             <thead>
               <tr>
@@ -205,18 +164,31 @@ export default function Restaurant() {
                     <td className="px-4 py-2">{item.nameValue}</td>
                     <td className="px-4 py-2">{item.price}</td>
                     <td className="px-4 py-2">
-                      {" "}
-                      <span
-                        style={{ cursor: "pointer" }}
-                        onClick={() => addQuantity(item.id, item.price)}
-                      >
-                        +
-                      </span>{" "}
-                      {item.quantity}{" "}
+                      {showAdd && (
+                        <span
+                          style={{ cursor: "pointer" }}
+                          onClick={() =>
+                            handleAdd(
+                              item.id,
+                              item.nameValue,
+                              item.price,
+                              item.quantity
+                            )
+                          }
+                        >
+                          +
+                        </span>
+                      )}
+                      {item.quantity}
                       <span
                         style={{ cursor: "pointer" }}
                         onClick={() =>
-                          minusQuantity(item.id, item.price, item.quantity)
+                          handleMinus(
+                            item.id,
+                            item.nameValue,
+                            item.price,
+                            item.quantity
+                          )
                         }
                       >
                         -
@@ -243,7 +215,8 @@ export default function Restaurant() {
       <div className="flex justify-center mt-2">
         <button
           onClick={handlePayment}
-          className="bg-sky-500 px-5 py-2 rounded-lg text-white text-lg relative"
+          className="bg-sky-500 px-5 py-2 rounded-lg text-white text-lg relative disabled:opacity-50 disabled:cursor-not-allowed"
+          disabled={disabledBtn}
         >
           Payment
         </button>

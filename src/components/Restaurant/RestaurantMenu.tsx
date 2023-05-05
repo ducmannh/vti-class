@@ -1,5 +1,6 @@
 import "../../App.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { RestaurantDataContext } from "./RestaurantContext";
 
 interface Menu {
   id: number;
@@ -23,7 +24,6 @@ export default function RestaurantMenu({
   price,
   imageValue,
   like,
-  // handleAddMenu,
   handleAdd,
   handleMinus,
   money,
@@ -32,10 +32,10 @@ export default function RestaurantMenu({
 }: Menu) {
   const [love, setLove] = useState(false);
   const [quantity, setQuantity] = useState(0);
-  const [showAdd, setShowAdd] = useState(true);
+  const {showAdd, setShowAdd} = useContext(RestaurantDataContext);
+  const { setDisabledBtn } = useContext(RestaurantDataContext);
   const handleClick = () => {
     setLove(!love);
-    // handleAddMenu(price, love);
   };
 
   const handleAddQuantity = () => {
@@ -55,9 +55,11 @@ export default function RestaurantMenu({
     const newMoney = 30 - totalPrice;
     if (newMoney < 0) {
       setShowAdd(false);
+      setDisabledBtn(true);
     } else {
       setMoney(newMoney);
       setShowAdd(true);
+      setDisabledBtn(false);
     }
   }, [totalPrice]);
 
