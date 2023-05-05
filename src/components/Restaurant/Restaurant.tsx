@@ -134,7 +134,6 @@ export default function Restaurant() {
                 like={item.like}
                 handleAdd={handleAdd}
                 handleMinus={handleMinus}
-                money={money}
                 totalPrice={totalPrice}
                 setMoney={setMoney}
               />

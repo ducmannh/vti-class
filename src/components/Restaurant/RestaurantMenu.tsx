@@ -9,10 +9,8 @@ interface Menu {
   price: number;
   imageValue: string;
   like: string;
-  // handleAddMenu: any;
   handleAdd: any;
   handleMinus: any;
-  money: number;
   totalPrice: number;
   setMoney: any;
 }
@@ -26,7 +24,6 @@ export default function RestaurantMenu({
   like,
   handleAdd,
   handleMinus,
-  money,
   totalPrice,
   setMoney,
 }: Menu) {
@@ -39,7 +36,6 @@ export default function RestaurantMenu({
   };
 
   const handleAddQuantity = () => {
-    if (price > money) alert("You don't have enough money");
     setQuantity(quantity + 1);
     handleAdd(id, nameValue, price, quantity);
   };
@@ -70,7 +66,7 @@ export default function RestaurantMenu({
         <div className="div2">
           <p>{nameValue}</p>
           <p>{description}</p>
-          <p>{quantity}</p>
+          <p>Quantity {quantity}</p>
         </div>
         <div className="div3">
           <p>{price}</p>
