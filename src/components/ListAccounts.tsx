@@ -3,6 +3,7 @@
 import React from "react";
 import AccountModal from "./AccountModal";
 import { ListItemAccountContext } from "../store/ListItemAccount";
+import { instance } from "../instanceAxios";
 
 export default function ListAccounts() {
   const { listAccounts, setListAccounts } = React.useContext(
@@ -32,36 +33,21 @@ export default function ListAccounts() {
 
   const handleEditAccount = (id: number) => {
     setOpenModal(true);
-    fetch(`https://6456519d5f9a4f236140a83c.mockapi.io/account/${id}`, {
-      method: "GET",
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        setSelectedAccount(res);
-        setShowUpdateButton(true);
-        setTitleModal("update");
-      });
+    
+    instance.get(`/account/${id}`).then((res) => {
+      setSelectedAccount(res.data);
+      setShowUpdateButton(true);
+      setTitleModal("update");
+    });
   };
 
   const handleDelete = (id: number) => {
-    fetch(`https://6456519d5f9a4f236140a83c.mockapi.io/account/${id}`, {
-      method: "DELETE",
-    })
-      .then((res) => res.json())
-      .then(() => {
-        listItem();
-      });
+    instance.delete(`/account/${id}`).then(() => listItem());
   };
 
   const handleCreateAccount = () => {
     setOpenModal(false);
-    fetch("https://6456519d5f9a4f236140a83c.mockapi.io/account", {
-      method: "GET",
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        setListAccounts(res);
-      });
+    listItem();
   };
 
   const handleSearch = () => {

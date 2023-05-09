@@ -4,6 +4,7 @@ import Modal from "@mui/material/Modal";
 import { useForm } from "react-hook-form";
 import React from "react";
 import { ListItemAccountContext } from "../store/ListItemAccount";
+import { instance } from "../instanceAxios";
 
 const style = {
   position: "absolute",
@@ -40,19 +41,10 @@ export default function AccountModal({
     defaultValues: selectedAccount,
   });
 
-  const onSubmit = async (data: any) => {
-    await fetch("https://6456519d5f9a4f236140a83c.mockapi.io/account", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        handleCreateAccount();
-        console.log(res);
-      });
+  const onSubmit = (data: any) => {
+    instance.post("/account", data).then(() => {
+      handleCreateAccount();
+    });
   };
 
   const handleUpdateAccount = () => {
@@ -68,22 +60,12 @@ export default function AccountModal({
       department,
       position,
     };
-    fetch(
-      `https://6456519d5f9a4f236140a83c.mockapi.io/account/${selectedAccount.id}`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(updatedAccount),
-      }
-    )
-      .then((res) => res.json())
-      .then(() => {
-        listItem();
-        reset();
-        handleCloseModal();
-      });
+
+    instance.put(`/account/${selectedAccount.id}`, updatedAccount).then(() => {
+      listItem();
+      reset();
+      handleCloseModal();
+    });
   };
 
   React.useEffect(() => {
