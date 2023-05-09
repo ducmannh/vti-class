@@ -14,6 +14,10 @@ export default function ListAccounts() {
   const [showUpdateButton, setShowUpdateButton] = React.useState(true);
   const [titleModal, setTitleModal] = React.useState("create");
   const [searchInput, setSearchInput] = React.useState("");
+  const [selectAllAccount, setSelectAllAccount] = React.useState(false);
+  const [selectAccount, setSelectAccount] = React.useState<any[]>([]);
+  const [count, setCount] = React.useState(0);
+  const isAnySelected = selectAccount.length > 0;
 
   const handleCloseModal = () => {
     setOpenModal(false);
@@ -77,6 +81,44 @@ export default function ListAccounts() {
     }
   };
 
+  const handleSelectedAllAccount = (e: any) => {
+    const isChecked = e.target.checked;
+    setSelectAllAccount(isChecked);
+    if (isChecked) {
+      const selectedAllAccounts = listAccounts.map((item: any) => ({
+        id: item.id,
+      }));
+      setSelectAccount(selectedAllAccounts);
+    } else {
+      setSelectAccount([]);
+    }
+    setCount(listAccounts.length);
+  };
+
+  const handleSelectedOneAccount = (e: any, item: any) => {
+    if (e.target.checked) {
+      setSelectAccount((prev) => [...prev, item]);
+      setCount(count + 1);
+      if (count === listAccounts.length - 1) {
+        setSelectAllAccount(true);
+      }
+    } else {
+      setSelectAccount((prev) =>
+        prev.filter((select) => select.id !== item.id)
+      );
+      setSelectAllAccount(false);
+      setCount(count - 1);
+    }
+  };
+
+  const handleDeleteSelected = () => {
+    const newListAccount = listAccounts.filter(
+      (select: any) => !selectAccount.some((item) => item.id === select.id)
+    );
+    setListAccounts(newListAccount);
+    setCount(0);
+  };
+
   React.useEffect(() => {
     listItem();
   }, []);
@@ -131,6 +173,15 @@ export default function ListAccounts() {
         <table className="w-full text-sm text-gray-500 text-center">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50">
             <tr>
+              <th scope="col">
+                {" "}
+                <input
+                  type="checkbox"
+                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded"
+                  checked={selectAllAccount}
+                  onChange={(e) => handleSelectedAllAccount(e)}
+                />{" "}
+              </th>
               <th scope="col" className="px-6 py-3">
                 Id
               </th>
@@ -164,6 +215,17 @@ export default function ListAccounts() {
             {listAccounts.map((item: any, index: number) => {
               return (
                 <tr className="bg-white border-b" key={index}>
+                  <td className="px-6 py-4">
+                    {" "}
+                    <input
+                      type="checkbox"
+                      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded"
+                      checked={selectAccount.some(
+                        (account: any) => account.id === item.id
+                      )}
+                      onChange={(e) => handleSelectedOneAccount(e, item)}
+                    />{" "}
+                  </td>
                   <td className="px-6 py-4">{item.id}</td>
                   <td className="px-6 py-4">{item.email}</td>
                   <td className="px-6 py-4">{item.username}</td>
@@ -193,6 +255,15 @@ export default function ListAccounts() {
           </tbody>
         </table>
       </div>
+
+      {isAnySelected && (
+        <button
+          onClick={handleDeleteSelected}
+          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 focus:outline-none"
+        >
+          Delete All
+        </button>
+      )}
 
       <AccountModal
         isOpenModal={isOpenModal}
