@@ -6,9 +6,13 @@ import { instance } from "../instanceAxios";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function ListAccounts() {
-  const { listAccounts, setListAccounts, listItem, setSelectedAccount } = React.useContext(
-    ListItemAccountContext
-  );
+  const {
+    listAccounts,
+    setListAccounts,
+    listItem,
+    setSelectedAccount,
+    userName,
+  } = React.useContext(ListItemAccountContext);
   const [searchInput, setSearchInput] = React.useState("");
   const [selectAllAccount, setSelectAllAccount] = React.useState(false);
   const [selectAccount, setSelectAccount] = React.useState<any[]>([]);
@@ -84,11 +88,16 @@ export default function ListAccounts() {
   };
 
   React.useEffect(() => {
-    listItem();
+    if(userName){
+      listItem();
+    }else{
+      navigate("/login")
+    }
   }, []);
 
   return (
     <div>
+      <h1 className="text-2xl text-rose-600">Welcom back, {userName}</h1>
       <div className="flex items-center">
         <Link to="/create">
           <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 focus:outline-none mt-2">
@@ -130,6 +139,12 @@ export default function ListAccounts() {
             ></path>
           </svg>
         </button>
+
+        <Link to="/login">
+          <button className="cursor-pointer text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 focus:outline-none mt-2 ml-5">
+            Logout
+          </button>
+        </Link>
       </div>
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table className="w-full text-sm text-gray-500 text-center">

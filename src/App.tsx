@@ -3,7 +3,7 @@ import EditAccount from "./components/EditAccount";
 import ListAccounts from "./components/ListAccounts";
 import Login from "./components/Login";
 import ListItemAccount from "./store/ListItemAccount";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom";
 
 const router = createBrowserRouter([
   {
@@ -21,6 +21,10 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "/",
+    element: <Navigate to="/login" />,
   },
 ]);
 

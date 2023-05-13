@@ -7,7 +7,7 @@ import { ListItemAccountContext } from "../store/ListItemAccount";
 
 export default function EditAccount() {
   const { register, handleSubmit, reset } = useForm({});
-  const { selectedAccount, listItem } = React.useContext(
+  const { selectedAccount, listItem, userName } = React.useContext(
     ListItemAccountContext
   );
   const navigate = useNavigate();
@@ -21,6 +21,12 @@ export default function EditAccount() {
   React.useEffect(() => {
     reset(selectedAccount);
   }, [reset, selectedAccount]);
+
+  React.useEffect(() => {
+    if (!userName) {
+      navigate("/login");
+    }
+  });
   return (
     <div>
       <h1 className="text-center text-2xl mb-3">Update Account</h1>

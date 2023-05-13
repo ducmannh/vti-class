@@ -7,7 +7,7 @@ import { ListItemAccountContext } from "../store/ListItemAccount";
 
 export default function CreateAccount() {
   const { register, handleSubmit } = useForm({});
-  const { listItem } = React.useContext(ListItemAccountContext);
+  const { listItem, userName } = React.useContext(ListItemAccountContext);
   const navigate = useNavigate();
 
   const onSubmit = (data: any) => {
@@ -16,6 +16,12 @@ export default function CreateAccount() {
       navigate("/home");
     });
   };
+
+  React.useEffect(() => {
+    if (!userName) {
+      navigate("/login");
+    }
+  });
   return (
     <div>
       <h1 className="text-center text-2xl mb-3">Create New Account</h1>
