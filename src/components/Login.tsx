@@ -1,12 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { ListItemAccountContext } from "../store/ListItemAccount";
+import { store } from "../redux/store";
+import { login } from "../redux/actions/userActions";
 
 export default function Login() {
-  const { userName, setUserName } = React.useContext(ListItemAccountContext);
+  const [userName, setUserName] = React.useState<any>("");
   const [userPassword, setUserPassword] = React.useState<any>("");
   const navigate = useNavigate();
+  console.log(store.getState());
 
   const users = [
     {
@@ -24,6 +26,7 @@ export default function Login() {
     const userPasswords = users.map((user) => user.password);
 
     if (userNames.includes(userName) && userPasswords.includes(userPassword)) {
+      store.dispatch(login({ username: userName, password: userPassword }));
       navigate("/home");
     } else {
       alert("Login failed");

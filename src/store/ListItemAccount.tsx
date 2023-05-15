@@ -7,14 +7,13 @@ export const ListItemAccountContext = createContext<any>(null);
 export default function ListItemAccount({ children }: any) {
   const [listAccounts, setListAccounts] = useState([]);
   const [selectedAccount, setSelectedAccount] = useState({});
-  const [userName, setUserName] = useState("");
-  const listItem = () => {
+  const listItem: any = () => {
     instance.get("/account").then((res) => setListAccounts(res.data));
   };
 
   return (
     <ListItemAccountContext.Provider
-      value={{ listItem, listAccounts, setListAccounts, selectedAccount, setSelectedAccount, userName, setUserName}}
+      value={{ listItem, listAccounts, setListAccounts, selectedAccount, setSelectedAccount}}
     >
       {children}
     </ListItemAccountContext.Provider>

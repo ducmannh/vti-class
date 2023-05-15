@@ -4,21 +4,18 @@ import React from "react";
 import { ListItemAccountContext } from "../store/ListItemAccount";
 import { instance } from "../instanceAxios";
 import { Link, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 export default function ListAccounts() {
-  const {
-    listAccounts,
-    setListAccounts,
-    listItem,
-    setSelectedAccount,
-    userName,
-  } = React.useContext(ListItemAccountContext);
+  const { listAccounts, setListAccounts, listItem, setSelectedAccount } =
+    React.useContext(ListItemAccountContext);
   const [searchInput, setSearchInput] = React.useState("");
   const [selectAllAccount, setSelectAllAccount] = React.useState(false);
   const [selectAccount, setSelectAccount] = React.useState<any[]>([]);
   const [count, setCount] = React.useState(0);
   const isAnySelected = selectAccount.length > 0;
   const navigate = useNavigate();
+  const username = useSelector((value: any) => value.user.username);
 
   const handleEditAccount = (id: number) => {
     navigate("/edit");
@@ -88,16 +85,16 @@ export default function ListAccounts() {
   };
 
   React.useEffect(() => {
-    if(userName){
+    if (username) {
       listItem();
-    }else{
-      navigate("/login")
+    } else {
+      navigate("/login");
     }
   }, []);
 
   return (
     <div>
-      <h1 className="text-2xl text-rose-600">Welcom back, {userName}</h1>
+      <h1 className="text-2xl text-rose-600">Welcom back, {username}</h1>
       <div className="flex items-center">
         <Link to="/create">
           <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 focus:outline-none mt-2">

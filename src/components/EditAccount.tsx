@@ -4,13 +4,16 @@ import { useForm } from "react-hook-form";
 import { instance } from "../instanceAxios";
 import { useNavigate } from "react-router-dom";
 import { ListItemAccountContext } from "../store/ListItemAccount";
+import { useSelector } from "react-redux";
 
 export default function EditAccount() {
   const { register, handleSubmit, reset } = useForm({});
-  const { selectedAccount, listItem, userName } = React.useContext(
+  const { selectedAccount, listItem } = React.useContext(
     ListItemAccountContext
   );
   const navigate = useNavigate();
+    const username = useSelector((value:any) => value.user.username)
+
   const onSubmit = (data: any) => {
     instance.put(`/account/${selectedAccount.id}`, data).then(() => {
       listItem();
@@ -23,7 +26,7 @@ export default function EditAccount() {
   }, [reset, selectedAccount]);
 
   React.useEffect(() => {
-    if (!userName) {
+    if (!username) {
       navigate("/login");
     }
   });
