@@ -2,15 +2,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import Header from "./Header";
+import { instance } from "../instanceAxios.";
 import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router";
 import {
   countProduct,
-  getListProducts,
-  selectedOneProduct,
-  selectedProduct,
-} from "../redux/actions/listActions";
-import { useNavigate } from "react-router";
-import { instance } from "../instanceAxios.";
+  getLists,
+  selectOneProduct,
+  selectProduct,
+} from "../redux/slice/listSlice";
 
 export default function List() {
   const dispatch = useDispatch();
@@ -20,7 +20,7 @@ export default function List() {
   const countItem = useSelector((value: any) => value.list.count);
 
   React.useEffect(() => {
-    dispatch(getListProducts());
+    dispatch(getLists());
   }, []);
 
   const handleAddCart = (id: number) => {
@@ -28,14 +28,14 @@ export default function List() {
 
     instance
       .get(`/product/${id}`)
-      .then((res) => dispatch(selectedProduct(res.data)));
+      .then((res) => dispatch(selectProduct(res.data)));
   };
 
   const handleDetail = (id: number) => {
     navigate(`/detail`);
     instance
       .get(`/product/${id}`)
-      .then((res) => dispatch(selectedOneProduct(res.data)));
+      .then((res) => dispatch(selectOneProduct(res.data)));
   };
 
   return (

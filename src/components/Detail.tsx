@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
 import React from "react";
 import Header from "./Header";
 import { useSelector, useDispatch } from "react-redux";
@@ -7,8 +8,9 @@ import {
   countProduct,
   quantityProduct,
   resetQuantity,
-  selectedProduct,
-} from "../redux/actions/listActions";
+  selectOneProduct,
+  selectProduct,
+} from "../redux/slice/listSlice";
 
 export default function Detail() {
   const dispatch = useDispatch();
@@ -18,23 +20,33 @@ export default function Detail() {
   const selectOneItem = useSelector(
     (value: any) => value.list.selectedOneProducts
   );
-
-  const aaa = useSelector((value: any) => value.list);
-  console.log(aaa);
+  console.log(selectOneItem.quantity);
 
   const handleAddCart = () => {
     dispatch(countProduct(countItem + 1));
-    dispatch(selectedProduct(selectOneItem));
+    dispatch(selectProduct(selectOneItem));
   };
 
   const handleMinus = () => {
     if (quantityItem > 1) {
-      dispatch(quantityProduct((selectOneItem.quantity = quantityItem - 1)));
+      dispatch(quantityProduct(quantityItem - 1));
+      dispatch(
+        selectOneProduct({
+          ...selectOneItem,
+          quantity: quantityItem - 1,
+        })
+      );
     }
   };
 
   const handleAdd = () => {
-    dispatch(quantityProduct((selectOneItem.quantity = quantityItem + 1)));
+    dispatch(quantityProduct(quantityItem + 1));
+    dispatch(
+      selectOneProduct({
+        ...selectOneItem,
+        quantity: quantityItem + 1,
+      })
+    );
   };
 
   React.useEffect(() => {

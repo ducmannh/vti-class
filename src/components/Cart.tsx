@@ -1,13 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import Header from "./Header";
+import { countProduct, deleteProduct } from "../redux/slice/listSlice";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  countProduct,
-  deleteProduct,
-} from "../redux/actions/listActions";
 
 export default function Cart() {
+  let totalPrice = 0;
   const dispatch = useDispatch();
 
   const selectItem = useSelector((value: any) => value.list.selectedProducts);
@@ -28,17 +26,20 @@ export default function Cart() {
             <th className="px-6 py-3">Name</th>
             <th className="px-6 py-3">Price</th>
             <th className="px-6 py-3">Quantity</th>
+            <th className="px-6 py-3">Price</th>
             <th className="px-6 py-3"></th>
           </tr>
         </thead>
         <tbody>
           {selectItem.map((item: any) => {
+            totalPrice += item.quantity * item.price;
             return (
               <tr key={item.id}>
                 <td className="px-6 py-4">{item.image}</td>
                 <td className="px-6 py-4">{item.name}</td>
                 <td className="px-6 py-4">{item.price}</td>
                 <td className="px-6 py-4">{item.quantity}</td>
+                <td className="px-6 py-4">{item.quantity * item.price}</td>
                 <td>
                   {" "}
                   <button
@@ -51,6 +52,14 @@ export default function Cart() {
               </tr>
             );
           })}
+          <tr>
+            <th className="px-6 py-4 text-lg text-gray-700">Total</th>
+            <td></td>
+            <td></td>
+            <td></td>
+            <th className="px-6 py-4 text-lg text-gray-700">{totalPrice}</th>
+            <td></td>
+          </tr>
         </tbody>
       </table>
     </div>
