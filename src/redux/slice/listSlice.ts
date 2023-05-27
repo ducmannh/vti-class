@@ -16,6 +16,7 @@ interface State {
   count: number;
   quantity: number;
   selectedOneProducts: any;
+  user: any;
 }
 
 const initialState: State = {
@@ -24,6 +25,7 @@ const initialState: State = {
   selectedProducts: [],
   quantity: 1,
   selectedOneProducts: { quantity: 1 },
+  user: [],
 };
 
 export const listSlice = createSlice({
@@ -56,6 +58,9 @@ export const listSlice = createSlice({
     resetQuantity: (state) => {
       state.quantity = 1;
     },
+    listUser: (state, action) => {
+      state.user = action.payload;
+    },
   },
 });
 
@@ -67,6 +72,7 @@ export const {
   deleteProduct,
   quantityProduct,
   resetQuantity,
+  listUser,
 } = listSlice.actions;
 
 export const getLists = () => async (dispatch: Dispatch) => {
