@@ -38,13 +38,11 @@ export default function Login() {
   }, []);
 
   const onSubmit = (data: FormData) => {
-    const existingUserName = user.find(
-      (item: any) => item.username === data.username
+    const existingUser = user.find(
+      (item: any) =>
+        item.username === data.username && item.password === data.password
     );
-    const existingUserPassword = user.find(
-      (item: any) => item.password === data.password
-    );
-    if (existingUserName && existingUserPassword) {
+    if (existingUser) {
       navigate("/");
     } else {
       alert("Wrong username or password");
@@ -52,7 +50,10 @@ export default function Login() {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col justify-center items-center h-screen text-xl">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="flex flex-col justify-center items-center h-screen text-xl"
+    >
       <h1>Login</h1>
       <div className="flex items-center mb-4">
         <label htmlFor="username" className="mr-14 text-xl text-gray-900">
