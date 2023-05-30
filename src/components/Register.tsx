@@ -8,6 +8,7 @@ import { listUser } from "../redux/slice/listSlice";
 import axios from "axios";
 import React from "react";
 import { useNavigate } from "react-router";
+import { useTimeOut } from "../hooks/useTimeOut";
 
 const schema = yup
   .object({
@@ -38,6 +39,7 @@ type FormData = yup.InferType<typeof schema>;
 export default function Register() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { timeOut } = useTimeOut();
   const user = useSelector((value: any) => value.list.user);
 
   const {
@@ -72,6 +74,12 @@ export default function Register() {
       .get("https://6456519d5f9a4f236140a83c.mockapi.io/user")
       .then((res) => dispatch(listUser(res.data)));
   }, []);
+
+  React.useEffect(() => {
+    if (timeOut) {
+      alert("Click ok to continue...");
+    }
+  }, [timeOut]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -206,7 +214,11 @@ export default function Register() {
       </div>
       <p className="text-red-500 text-sm">{errors.bio?.message}</p>
 
-      <input type="submit" value="Register" className="bg-blue-500 text-white px-4 py-2 rounded cursor-pointer"/>
+      <input
+        type="submit"
+        value="Register"
+        className="bg-blue-500 text-white px-4 py-2 rounded cursor-pointer"
+      />
     </form>
   );
 }

@@ -11,16 +11,16 @@ import {
   selectOneProduct,
   selectProduct,
 } from "../redux/slice/listSlice";
+import { useTimeOut } from "../hooks/useTimeOut";
 
 export default function Detail() {
   const dispatch = useDispatch();
-
+  const { timeOut } = useTimeOut();
   const countItem = useSelector((value: any) => value.list.count);
   const quantityItem = useSelector((value: any) => value.list.quantity);
   const selectOneItem = useSelector(
     (value: any) => value.list.selectedOneProducts
   );
-  console.log(selectOneItem.quantity);
 
   const handleAddCart = () => {
     dispatch(countProduct(countItem + 1));
@@ -52,6 +52,12 @@ export default function Detail() {
   React.useEffect(() => {
     dispatch(resetQuantity());
   }, []);
+
+  React.useEffect(() => {
+    if (timeOut) {
+      alert("Click ok to continue...");
+    }
+  }, [timeOut]);
 
   return (
     <div>

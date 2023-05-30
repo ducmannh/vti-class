@@ -3,11 +3,13 @@
 import Header from "./Header";
 import { countProduct, deleteProduct } from "../redux/slice/listSlice";
 import { useSelector, useDispatch } from "react-redux";
+import { useTimeOut } from "../hooks/useTimeOut";
+import React from "react";
 
 export default function Cart() {
   let totalPrice = 0;
   const dispatch = useDispatch();
-
+  const { timeOut } = useTimeOut();
   const selectItem = useSelector((value: any) => value.list.selectedProducts);
   const countItem = useSelector((value: any) => value.list.count);
 
@@ -15,6 +17,12 @@ export default function Cart() {
     dispatch(deleteProduct(id));
     dispatch(countProduct(countItem - 1));
   };
+
+  React.useEffect(() => {
+    if (timeOut) {
+      alert("Click ok to continue...");
+    }
+  }, [timeOut]);
 
   return (
     <div>

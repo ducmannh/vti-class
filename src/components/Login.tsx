@@ -9,6 +9,7 @@ import axios from "axios";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
+import { useTimeOut } from "../hooks/useTimeOut";
 
 const schema = yup
   .object({
@@ -21,6 +22,7 @@ type FormData = yup.InferType<typeof schema>;
 export default function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { timeOut } = useTimeOut();
   const user = useSelector((value: any) => value.list.user);
 
   const {
@@ -30,6 +32,12 @@ export default function Login() {
   } = useForm<FormData>({
     resolver: yupResolver(schema),
   });
+
+  React.useEffect(() => {
+    if (timeOut) {
+      alert("Click ok to continue...");
+    }
+  }, [timeOut]);
 
   React.useEffect(() => {
     axios
