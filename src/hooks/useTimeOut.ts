@@ -14,7 +14,7 @@ export const useTimeOut = () => {
 
       timeoutId = setTimeout(() => {
         setTimeOut(true);
-      }, 5000);
+      }, 500000);
     };
 
     const handleActivity = () => {

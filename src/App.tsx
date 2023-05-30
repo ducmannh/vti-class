@@ -6,6 +6,7 @@ import { store } from "./redux/store";
 import { Provider } from "react-redux";
 import Register from "./components/Register";
 import Login from "./components/Login";
+import BaiTap from "./components/BaiTap";
 
 function App() {
   const router = createBrowserRouter([
@@ -28,7 +29,11 @@ function App() {
     {
       path: "/login",
       element: <Login />,
-    }
+    },
+    {
+      path: "bai-tap",
+      element: <BaiTap />,
+    },
   ]);
   return (
     <>
