@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
@@ -22,6 +23,7 @@ export default function List() {
   const countItem = useSelector((value: any) => value.list.count);
 
   React.useEffect(() => {
+    // @ts-ignore
     dispatch(getLists());
   }, []);
 
